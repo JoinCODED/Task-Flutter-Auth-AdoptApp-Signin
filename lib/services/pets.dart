@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:adopt_app/models/pet.dart';
 import "package:dio/dio.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioClient {
   final Dio _dio = Dio();
@@ -19,6 +21,12 @@ class DioClient {
   }
 
   Future<Pet> createPet({required Pet pet}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
+
+    _dio.options.headers = {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
     late Pet retrievedPet;
     try {
       FormData data = FormData.fromMap({
@@ -68,6 +76,13 @@ class DioClient {
   }
 
   Future<Pet> adoptPet({required int petId}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
+
+    _dio.options.headers = {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
     late Pet retrievedPet;
     try {
       Response response = await _dio.post(_baseUrl + '/pets/adopt/${petId}');
