@@ -5,7 +5,7 @@ import "package:dio/dio.dart";
 class DioClient {
   final Dio _dio = Dio();
 
-  final _baseUrl = 'http://10.0.2.2:5000';
+  final _baseUrl = 'https://coded-pets-api-auth.herokuapp.com';
 
   Future<List<Pet>> getPets() async {
     List<Pet> pets = [];
